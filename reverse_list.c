@@ -12,7 +12,10 @@ struct ListNode* reverse(struct ListNode* head){
     }
     else{
         struct ListNode *newHead;
-        newHead = reverse(head->sig);
         struct ListNode *last = head->sig;
+        newHead = reverse(head->sig);
+        last->sig = head;
+        head-> = NULL;
+        return newHead;
     }
 }
