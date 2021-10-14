@@ -25,12 +25,12 @@ def conflict_checker(diaP:list, date:str):
     i=0
     #sorts [[int_lower_1, int_upper_1],...] by ascending order in terms of int_lower_x, x being the index of any element of the tuple of lists 
     #diaP.sort(key = lambda lower:lower.hora_fin)
-    listaOrdenada = sorted(diaP, key = lambda lower:lower.hora_fin)
+    diaP.sort(key = lambda lower:lower.hora_fin)
     while(i < len(diaP)-1):
         if( int(diaP[i].hora_fin) > int(diaP[i+1].hora_inicio) ): 
             del diaP[i+1]
         else : i=i+1
-    print( date + " " + str(len(listaOrdenada)) + "\n" + listaPrinter(listaOrdenada))
+    print( date + " " + str(len(diaP)) + "\n" + listaPrinter(diaP))
     
 
         
@@ -51,7 +51,7 @@ while line != "000000 0\n":
         hora_fin = spline[3]
         partido = Partido(equipo1, equipo2, hora_inicio, hora_fin)
         diaP.append(partido)   
-    line = sys.stdin.readline()
+    line = sys.stdin.readline() #next line
 conflict_checker(diaP,date) #for last matchday       
 print("000000 0")
 sys.exit() 
