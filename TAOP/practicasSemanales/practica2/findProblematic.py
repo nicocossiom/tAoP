@@ -27,8 +27,8 @@ def recursiveSolution(max:int, min:int, to):
     elif limits in { -1, 3 } and leftBigger: return center-1 
     elif limits in { 1, 3 } and rightBigger: return center+1 
     else: 
-        if leftBigger: res = recursiveSolution(0,center-1, to)
-        elif rightBigger: res = recursiveSolution(to.size()-1,center+1, to)
+        if leftBigger: res = recursiveSolution(center-1, min, to)
+        elif rightBigger: res = recursiveSolution(max,center+1, to)
     return res 
 
 def findProblematicTemperature(to) -> int:
@@ -39,9 +39,9 @@ def findProblematicTemperature(to) -> int:
         izq = to.get(0)
         der = to.get(1)
         return izq if izq >= der else der
-    if to.size() == 1: return to.get(0)
-    if to.size() == 0: return -1 
-    return recursiveSolution(to.size(), 0, to)  
+    if to.size() == 1: return 0
+    # if to.size() == 0: return -1 
+    return recursiveSolution(to.size()-1, 0, to)  
     
 
 
