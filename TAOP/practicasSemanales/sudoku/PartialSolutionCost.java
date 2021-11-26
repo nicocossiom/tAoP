@@ -1,5 +1,3 @@
-package TAOP.practicasSemanales.sudoku;
-
 import java.util.List;
 
 interface PartialSolutionCost extends Comparable {
