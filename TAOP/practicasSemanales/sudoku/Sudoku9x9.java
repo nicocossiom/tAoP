@@ -1,13 +1,20 @@
-import java.io.*;
-import java.util.*;
-
+import java.io.BufferedInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+import java.util.Set;
 public class Sudoku9x9 {
     
     public class Board implements PartialSolutionCost, Iterable<Board>{
         private Set<Integer> setsFilas []; //array of sets, each set contains all numbers in a row
         private Set<Integer> setsColumnas[]; //array of sets, each set contains all numbers in a column
-        private Set<Integer> setCuadrantes [];  //array of sets, each set contains all numbers of a square 
+        private Set<Integer> setCuadrado [];  //array of sets, each set contains all numbers of a square 
         private List<Cell> cellList; //a cell is a to be determined number 
+        private Cell current;
         //Initial board maker given input, only used at start 
         public Board(String[] input){
             cellList = new ArrayList<Cell>();
@@ -18,7 +25,7 @@ public class Sudoku9x9 {
                     if (valor != null) { 
                         this.setsColumnas[i] = new HashSet<Integer>();
                         this.setsFilas[i] = new HashSet<Integer>();
-                        this.setCuadrantes[i] = new HashSet<Integer>();
+                        this.setCuadrado[i] = new HashSet<Integer>();
                     }
                     else { 
                         cellList.add(new Cell(i,j, this));
@@ -28,15 +35,18 @@ public class Sudoku9x9 {
            }
         }
         private Board board;
-        public Board(Board board){
-           this.setsFilas = board.setsFilas;
+        public Board(Board board, Cell cell){
+           this.setsFilas = Set.copyOf(board.setsFilas);
+           this.current = cell;
            this.setsColumnas = board.setsColumnas;
            this.cellList = board.cellList;
+           
         }
         
         @Override
-        public boolean isValid() {
-            return true;  
+        public boolean isValid(){
+            // return this.current.
+            return true;
         }
 
         @Override
@@ -56,23 +66,30 @@ public class Sudoku9x9 {
         }
         public void print() {
             System.out.println("Board [cellList=" + cellList + "setCuadrantes="
-                    + Arrays.toString(setCuadrantes) + ", setsColumnas=" + Arrays.toString(setsColumnas)
+                    + Arrays.toString(setCuadrado) + ", setsColumnas=" + Arrays.toString(setsColumnas)
                     + ", setsFilas=" + Arrays.toString(setsFilas) + "]");
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            Set
+            return 0;
         } 
     }
     class BoardIterator implements Iterator<Board>{
         Board board;
          BoardIterator(Board board){
             this.board = board;
-            
          }
         @Override
         public boolean hasNext() {
-            return false;
+            return !this.board.isFinal();
         }
         @Override
         public Sudoku9x9.Board next() {
-
+            
+            // int minLibertad = libertades
+            // Board newBoard = new Board(board);
             return null;
         }
     }
@@ -91,7 +108,7 @@ public class Sudoku9x9 {
         //Calculates the set of possible values that said Cell can contain        
         public Set<Integer> calculateValues( Board tablero ){
             Set<Integer> comp = new HashSet<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
-            comp.removeAll(tablero.setCuadrantes[this.cuadrado]);
+            comp.removeAll(tablero.setCuadrado[this.cuadrado]);
             comp.removeAll(tablero.setsColumnas[this.columna]);
             comp.removeAll(tablero.setsFilas[this.fila]);
             return comp;
@@ -100,13 +117,17 @@ public class Sudoku9x9 {
         public int freedom( Board tablero ){
            return this.calculateValues(tablero).size();
         }
+
+        
+
         
         public boolean add ( Board tablero, int valAProbar){
             //Si se consiguen añadir a las 3 es que es un valor posible 
-            return (tablero.setCuadrantes[this.cuadrado].add(valAProbar) && 
+            return (tablero.setCuadrado[this.cuadrado].add(valAProbar) && 
                     tablero.setsColumnas[this.columna].add(valAProbar) && 
                     tablero.setsFilas[this.fila].add(valAProbar));
         }
+
         private int calcCuadrado(){
             // +-----+---+---+---+---+---+---+---+---+---+
             // | i\j | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
@@ -187,8 +208,8 @@ public class Sudoku9x9 {
         // this should throw an exception...
         return(null);
     } // END firstSolution 
+
     public void main (String[] args){
-      
         Scanner scanner = new Scanner(new BufferedInputStream(System.in));
         int i = 0; //line counter
         List<String> sudoku = new ArrayList<String>(); 
