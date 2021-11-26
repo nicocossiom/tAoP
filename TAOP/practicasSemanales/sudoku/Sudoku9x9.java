@@ -54,7 +54,6 @@ public class Sudoku9x9 {
         public Iterator<Board> iterator() {
             return new BoardIterator(this);
         }
-
         public void print() {
             System.out.println("Board [cellList=" + cellList + "setCuadrantes="
                     + Arrays.toString(setCuadrantes) + ", setsColumnas=" + Arrays.toString(setsColumnas)
@@ -192,20 +191,16 @@ public class Sudoku9x9 {
       
         Scanner scanner = new Scanner(new BufferedInputStream(System.in));
         int i = 0; //line counter
-        int k = 0;
-        ArrayList<ArrayList<String> > sudokus = new ArrayList<ArrayList<String>>();
+        List<String> sudoku = new ArrayList<String>(); 
         while (scanner.hasNextLine()){
-            try {sudokus.get(k);} catch(IndexOutOfBoundsException e){sudokus.add(new ArrayList<String>());}
             String line = scanner.nextLine(); 
             if (line == "\n") {
-                Thread t = new Thread
-                Board tablero = new Board(sudokus.get(k).stream().toArray(String[] :: new));
-                Board solution = (Board) Sudoku9x9.firstSolution(tablero);
-                solution.print();
-                i = 0;
-                k++;
+               Board tablero = new Board(sudoku.stream().toArray(String[] :: new));
+               Board solution = (Board) Sudoku9x9.firstSolution(tablero);
+               solution.print();
+               i = 0;
             }
-            sudokus.get(i).add(line);
+            sudoku.add(line);
             i++;
         }
     }
