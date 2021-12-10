@@ -3,7 +3,6 @@ from typing import List
 
 
 def navLinkedMaxSubSum(i, lista, result):
-    # print(i, lista, result)
     if i == 0:
         result[0] = "F"
         result[1] = "H"
@@ -13,11 +12,8 @@ def navLinkedMaxSubSum(i, lista, result):
         result[1] = "F"
         return result
     prev, origin = lista[i]
-    # print(prev, origin)
     if origin == i or i == len(lista):
-        # print(f"El {origin} es F")
         result[origin] = "F"
-    # print(f"Me voy a {prev}")
     return navLinkedMaxSubSum(prev, lista, result)
 
 
@@ -48,19 +44,18 @@ def maxSubsequentSum(lista: List[int]):
     return peorSuma - maxsum[size - 1], result
 
 
-def solution():
-    casos = sys.stdin.read()
-    casos = casos.split("\n\n")
+def solution(entrada):
+    casos = "\n".join(entrada.splitlines()).split("\n\n")
     for caso in casos:
-        if caso == "0 0\n":
-            print("\n\n")
-            exit()
         primera = caso.replace("\n", " ", 1).split(" ", 2)  # separa los primeros numeros del resto
         A, B = int(primera[0]), int(primera[1])
-        linea = primera[2].split("\n")  # cogemos de la primera a la última fila
+        if A == 0 and B == 0:
+            print("\n\n")
+            exit()
+        lineas = primera[2].split("\n")  # cogemos de la primera a la última fila
         obs = {}
         for i in range(A):
-            obs[i] = linea[i].split(" ")
+            obs[i] = lineas[i].split(" ")
 
         j, path, indexpath = 0, [], []
         while j < B:
@@ -74,10 +69,12 @@ def solution():
             j += 1
         sumTotal, speeds = maxSubsequentSum(path)
         endString = str(sumTotal) + "\n"
-        for index in indexpath: endString += f"\t{index}"
+        for index in indexpath: endString += f"     {index}"
         endString += "\n"
-        for speed in speeds: endString += f"\t{speed}"
+        for speed in speeds: endString += f"     {speed}"
         print(endString, "\n")
 
 
-solution()
+if __name__ == "__main__":
+    entrada = sys.stdin.read()
+    solution(entrada)
