@@ -3,39 +3,44 @@ from typing import List
 
 
 def navLinkedMaxSubSum(i, lista, result):
-    if i == 0:
-        result[0] = "F"
-        result[1] = "H"
-        return result
-    elif i == 1:
-        result[0] = "H"
-        result[1] = "F"
-        return result
     prev, origin = lista[i]
+    if i == 32:
+        pass
+    if origin == -1:
+        result[prev] = "F"
+        return result
     if origin == i or i == len(lista):
         result[origin] = "F"
-    return navLinkedMaxSubSum(prev, lista, result)
+    navLinkedMaxSubSum(prev, lista, result)
+    return result
 
+def assureTime(speeds, lista):
+    suma = 0
+    for i in range(len(speeds)):
+        if speeds[i]=="F": suma+=lista[i]
+        else: suma+=lista[i]*2
+    return suma
 
-def maxSubsequentSum(lista: List[int]):
+def maxSpeedSum(lista: List[int]):
     size = len(lista)
     if size == 0: return
     if size == 1: return lista[0]
     maxsum: List[int] = [None] * size
-    maxsum[0] = lista[0]
     linkedMaxSubSum = [None] * size
+    maxsum[0] = lista[0]
+    linkedMaxSubSum[0] = 0, -1
     if lista[0] > lista[1]:
         maxsum[1] = lista[0]
-
+        linkedMaxSubSum[1] = 0, -1
     else:
         maxsum[1] = lista[1]
-
+        linkedMaxSubSum[1] = 1, -1
     for index in range(2, size):
         a = maxsum[index - 1]
         b = maxsum[index - 2] + lista[index]
         if a > b:
             maxsum[index] = a
-            linkedMaxSubSum[index] = index - 1, -1
+            linkedMaxSubSum[index] = index - 1, -2
         else:
             maxsum[index] = b
             linkedMaxSubSum[index] = index - 2, index
@@ -50,7 +55,6 @@ def solution(entrada):
         primera = caso.replace("\n", " ", 1).split(" ", 2)  # separa los primeros numeros del resto
         A, B = int(primera[0]), int(primera[1])
         if A == 0 and B == 0:
-            print("\n\n")
             exit()
         lineas = primera[2].split("\n")  # cogemos de la primera a la última fila
         obs = {}
@@ -67,14 +71,15 @@ def solution(entrada):
             indexpath.append(col.index(smallest))
             path.append(smallest)
             j += 1
-        sumTotal, speeds = maxSubsequentSum(path)
+        sumTotal, speeds = maxSpeedSum(path)
         endString = str(sumTotal) + "\n"
         for index in indexpath: endString += f"     {index}"
         endString += "\n"
         for speed in speeds: endString += f"     {speed}"
-        print(endString, "\n")
+        print(endString+"\n")
 
 
 if __name__ == "__main__":
     entrada = sys.stdin.read()
+    #entrada = open("data").read()
     solution(entrada)
