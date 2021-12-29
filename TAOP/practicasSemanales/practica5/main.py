@@ -55,35 +55,46 @@ def isValidCircle(circle: Circle, points: List[Point]):
 
 def findCircle(boundary):
     leng = len(boundary)
-    if leng == 3:
-        return circumCircle(boundary[0], boundary[1], boundary[2] )
+    if not boundary:
+        return Circle(Point(0, 0), 0)
+    if leng == 1:
+        return Circle(boundary[0], 0)
     elif leng == 2:
         return circleFrom2Points(boundary[0], boundary[1])
     else:
-        # trivial
-        return Circle(Point(0,0), 0)
+        i = 0
+        while i < 3:
+            j = i + 1
+            while j < 3:
+                circ = circleFrom2Points(boundary[i], boundary[j])
+                if isValidCircle(circ, boundary):
+                    return circ
+                j += 1
+            i += 1
+        return circumCircle(boundary[0], boundary[1], boundary[2])
 
-
-def mec(points, n, boundary, b):
-    if n == 0 or b == 3:
+def mec(points, n, boundary):
+    if n == 0 or len(boundary) == 3:
         return findCircle(boundary)
     # choose p in P(randomly and uniformly)
-    random = randint(0, n-1)
+    random = randint(0, n-1) if n != 1 else 0
     element = points[random]
     # exchange randomly chosen element with last
     points[random], points[n-1] = points[n-1], points[random]
     # D := welzl(P − {p}, R)
-    localCircle = mec(points, n - 1, boundary, b)
+    localCircle = mec(points, n - 1, boundary.copy())
     if isInsideCircle(element, localCircle):
         return localCircle
     # return welzl(P − {p}, R ∪ {p})
     boundary.append(element)
-    return mec(points, n - 1, boundary, b)
+    return mec(points.copy(), n - 1, boundary)
 
 
 
 if __name__ == "__main__":
     totalpoints = int(sys.stdin.readline())
+    if totalpoints > 500:
+        sys.setrecursionlimit(totalpoints+1000)
     x, y = [] , []
     points = []
     for i in range(0, totalpoints):
@@ -92,12 +103,12 @@ if __name__ == "__main__":
         points.append(point)
         x.append(point.x)
         y.append(point.y)
-        print(x[i], y[i], file=sys.stderr)
+        # print(x[i], y[i], file=sys.stderr)
     if totalpoints < 4:
         result = findCircle(points)
     else:
         copy_points = points.copy()
         shuffle(copy_points)
-        result = mec(copy_points, len(points), [], 0)
+        result = mec(copy_points, len(points), [])
 
     print(f'{float(round(decimal.Decimal(str(result.center.x)), ndigits=2)):.2f} {result.center.y:.2f} {result.radius:.2f}')
