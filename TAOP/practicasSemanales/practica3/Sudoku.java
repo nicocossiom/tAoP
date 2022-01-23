@@ -3,14 +3,29 @@ import java.io.BufferedInputStream;
 import java.nio.channels.AcceptPendingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
+
 import javax.management.relation.RoleResult;
 
+
+
+
 public class Sudoku {
+    private static class Pair<X, Y> { 
+        public final X x; 
+        public final Y y; 
+        public Pair(X x, Y y) { 
+          this.x = x; 
+          this.y = y; 
+        }
+    }
 
     private Board board;
     private int SQUARESIZE;
@@ -29,10 +44,30 @@ public class Sudoku {
         }
     }
 
+    private static class intCellComparator implements Comparator<Pair<Integer, Cell>> {
+
+        @Override
+        public int compare(Sudoku.Pair<Integer, Sudoku.Cell> o1, Sudoku.Pair<Integer, Sudoku.Cell> o2) {
+            return o1.x.compareTo(o2.x);
+        }
+            
+    }
+
     public static String solve(Sudoku sudoku){
         String result = "";
-        for (List<Cell> celda : sudoku.board.tablero) {
-            for List<ce
+        Queue<Pair<Integer, Cell>> freedomQueue = new PriorityQueue<>(new intCellComparator());
+        for (List<Cell> lista : sudoku.board.tablero) {
+            for (Cell celda : lista ) {
+                if (celda.value == 0){
+                    int freedomDegree = celda.freedom();
+                    Pair<Integer, Cell> pareja = new Pair<Integer, Cell>(freedomDegree, celda);
+                    freedomQueue.add(pareja);
+                }
+            }
+        }
+        for (Pair<Integer,Cell> pair : freedomQueue) {
+            Cell celda = pair.y;
+            celda.value = celd
         }
         return result;
     }
@@ -84,7 +119,7 @@ public class Sudoku {
 
     public class Cell {
             
-        private int [] freedomValues;
+        private Integer [] freedomValues;
         private int value;
         private int row;
         private int column;
@@ -96,10 +131,10 @@ public class Sudoku {
             this.column = column;
         }
 
-        // public int freedom(){
-        //     this.freedomValues = calculateFreedomValues(this);
-        //     return freedomValues.length;
-        // }
+        public int freedom(){
+            this.freedomValues = calculateFreedomValues(this);
+            return freedomValues.length;
+        }
 
         @Override
         public String toString() {
