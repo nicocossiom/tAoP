@@ -6,13 +6,24 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch Sudoku",
+            "name": "Sudoku9x9",
             "request": "launch",
             "mainClass": "Sudoku",
             "projectName": "tAoP_c2a924ab",
             "args": [
                 "<",
                 "C:\\Users\\nicol\\Documents\\UPM\\tAoP\\TAOP\\practicasSemanales\\practica3\\input"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Sudoku4x4",
+            "request": "launch",
+            "mainClass": "Sudoku",
+            "projectName": "tAoP_c2a924ab",
+            "args": [
+                "<",
+                "C:\\Users\\nicol\\Documents\\UPM\\tAoP\\TAOP\\practicasSemanales\\practica3\\sudoku4x4"
             ]
         },
         {
