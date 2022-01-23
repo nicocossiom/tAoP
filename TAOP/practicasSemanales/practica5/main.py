@@ -33,9 +33,9 @@ def middle(p1: Point, p2: Point) -> Point:
 def circumCircle(a: Point, b: Point, c: Point) -> Circle:
     d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y))
     ux = ((a.x * a.x + a.y * a.y) * (b.y - c.y) + (b.x * b.x + b.y * b.y) * (c.y - a.y) + (c.x * c.x + c.y * c.y) * (
-            a.y - b.y)) / d
+        a.y - b.y)) / d
     uy = ((a.x * a.x + a.y * a.y) * (c.x - b.x) + (b.x * b.x + b.y * b.y) * (a.x - c.x) + (c.x * c.x + c.y * c.y) * (
-            b.x - a.x)) / d
+        b.x - a.x)) / d
     circumcenter = Point(ux, uy)
     return Circle(circumcenter, dist(circumcenter, a))
 
@@ -73,6 +73,7 @@ def findCircle(boundary):
             i += 1
         return circumCircle(boundary[0], boundary[1], boundary[2])
 
+
 def mec(points, n, boundary):
     if n == 0 or len(boundary) == 3:
         return findCircle(boundary)
@@ -90,20 +91,17 @@ def mec(points, n, boundary):
     return mec(points.copy(), n - 1, boundary)
 
 
-
 if __name__ == "__main__":
     totalpoints = int(sys.stdin.readline())
-    if totalpoints > 500:
-        sys.setrecursionlimit(totalpoints+1000)
-    x, y = [] , []
+    if totalpoints > 999:
+        sys.setrecursionlimit(totalpoints+7)
+    x, y = [], []
     points = []
     for i in range(0, totalpoints):
         pointstr = sys.stdin.readline().strip().split(" ")
         point = Point(float(pointstr[0]), float(pointstr[1]))
         points.append(point)
-        x.append(point.x)
-        y.append(point.y)
-        # print(x[i], y[i], file=sys.stderr)
+
     if totalpoints < 4:
         result = findCircle(points)
     else:

@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch Sudoku",
+            "request": "launch",
+            "mainClass": "Sudoku",
+            "projectName": "tAoP_c2a924ab",
+            "args": [
+                "<",
+                "C:\\Users\\nicol\\Documents\\UPM\\tAoP\\TAOP\\practicasSemanales\\practica3\\input"
+            ]
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
