@@ -14,17 +14,23 @@ def navLinkedMaxSubSum(i, lista, result):
     navLinkedMaxSubSum(prev, lista, result)
     return result
 
+
 def assureTime(speeds, lista):
     suma = 0
     for i in range(len(speeds)):
-        if speeds[i]=="F": suma+=lista[i]
-        else: suma+=lista[i]*2
+        if speeds[i] == "F":
+            suma += lista[i]
+        else:
+            suma += lista[i]*2
     return suma
+
 
 def maxSpeedSum(lista: List[int]):
     size = len(lista)
-    if size == 0: return
-    if size == 1: return lista[0]
+    if size == 0:
+        return
+    if size == 1:
+        return lista[0]
     maxsum: List[int] = [None] * size
     linkedMaxSubSum = [None] * size
     maxsum[0] = lista[0]
@@ -52,11 +58,13 @@ def maxSpeedSum(lista: List[int]):
 def solution(entrada):
     casos = "\n".join(entrada.splitlines()).split("\n\n")
     for caso in casos:
-        primera = caso.replace("\n", " ", 1).split(" ", 2)  # separa los primeros numeros del resto
+        primera = caso.replace("\n", " ", 1).split(
+            " ", 2)  # separa los primeros numeros del resto
         A, B = int(primera[0]), int(primera[1])
         if A == 0 and B == 0:
             exit()
-        lineas = primera[2].split("\n")  # cogemos de la primera a la última fila
+        # cogemos de la primera a la última fila
+        lineas = primera[2].split("\n")
         obs = {}
         for i in range(A):
             obs[i] = lineas[i].split(" ")
@@ -73,13 +81,14 @@ def solution(entrada):
             j += 1
         sumTotal, speeds = maxSpeedSum(path)
         endString = str(sumTotal) + "\n"
-        for index in indexpath: endString += f"     {index}"
+        for index in indexpath:
+            endString += f"     {index}"
         endString += "\n"
-        for speed in speeds: endString += f"     {speed}"
+        for speed in speeds:
+            endString += f"     {speed}"
         print(endString+"\n")
 
 
-if __name__ == "__main__":
-    entrada = sys.stdin.read()
-    #entrada = open("data").read()
-    solution(entrada)
+entrada = sys.stdin.read()
+print(entrada)
+solution(entrada)
