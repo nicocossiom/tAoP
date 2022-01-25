@@ -4,6 +4,7 @@ from math import sqrt
 from typing import List, Tuple, Any
 import decimal
 
+
 def dist(p1: tuple[float, float], p2: tuple[float, float]) -> float:
     return sqrt(abs(p1[0] - p2[0]) ** 2 + abs(p1[1] - p2[1]) ** 2)
 
@@ -15,8 +16,10 @@ def middle(p1: tuple[float, float], p2: tuple[float, float]) -> tuple[float, flo
 def circumcenter(numeros):
     ax, ay, bx, by, cx, cy = numeros
     d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
-    ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by) * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / d
-    uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by) * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / d
+    ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by)
+          * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / d
+    uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by)
+          * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / d
     return ux, uy
 
 
@@ -36,11 +39,15 @@ if __name__ == "__main__":
         print(x[i], y[i], file=sys.stderr)
         # comprobar si punto es max o min en la x
         if i >= 2:
-            if point[0] > xmax[0][0]: xmax[0] = point  # max
-            if point[0] < xmax[1][0]: xmax[1] = point  # min
+            if point[0] > xmax[0][0]:
+                xmax[0] = point  # max
+            if point[0] < xmax[1][0]:
+                xmax[1] = point  # min
             # comprobar si punto es max o min en la y
-            if point[1] > ymax[0][1]: ymax[0] = point  # max
-            if point[1] < ymax[1][1]: ymax[1] = point  # min
+            if point[1] > ymax[0][1]:
+                ymax[0] = point  # max
+            if point[1] < ymax[1][1]:
+                ymax[1] = point  # min
         elif i == 1:
             xmax = [(x[0], y[0]), (x[1], y[1])]
             ymax = [(x[0], y[0]), (x[1], y[1])]
@@ -100,4 +107,5 @@ if __name__ == "__main__":
                 center = middle(ymax[0], ymax[1])
                 rad = rady
         center = middle(xmax[0], xmax[1])
-    print(f'{float(round(decimal.Decimal(str(center[0])), ndigits=2)):.2f} {center[1]:.2f} {rad:.2f}')
+    print(
+        f'{float(round(decimal.Decimal(str(center[0])), ndigits=2)):.2f} {center[1]:.2f} {rad:.2f}')
